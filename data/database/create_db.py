@@ -14,10 +14,12 @@ def create_database():
                     ticker       TEXT, 
                     date         TEXT,
                     high         REAL,
+                    open         REAL,
                     low          REAL,
                     close        REAL,
                     volume       REAL,
-                    dividends    REAL 
+                    dividends    REAL, 
+                    stock_splits REAL
                     );
                
     ''')
