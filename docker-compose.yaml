@@ -1,0 +1,14 @@
+services:
+  data-ingestion:
+    build:
+      context: ./docker
+      dockerfile: Dockerfile
+    container_name: data-ingestion
+    volumes:
+      - ./data:/app/data  
+      - ./src:/app/src    
+    environment:
+      DATABASE_PATH: "/app/data/database/financial_data.db"  
+      LOAD_TYPE: "incremental"                              
+    command: python /app/src/ingest/data_ingest.py
+    restart: always
