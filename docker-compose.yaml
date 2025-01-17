@@ -1,12 +1,12 @@
 services:
   data-ingestion:
     build:
-      context: ./docker
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: docker/Dockerfile
     container_name: data-ingestion
     volumes:
       - ./data:/app/data  
-      - ./src:/app/src    
+      - ./src:/app/src     
     environment:
       DATABASE_PATH: "/app/data/database/financial_data.db"  
       LOAD_TYPE: "incremental"                              

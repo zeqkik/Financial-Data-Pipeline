@@ -19,6 +19,7 @@ def ingest_data(load_type="full"):
 
     cursor.execute("SELECT COUNT(*) FROM assets")
 
+    
     if(load_type=="full"):
         # Historic 5 years data
         start_date = "2020-01-01"
@@ -26,6 +27,7 @@ def ingest_data(load_type="full"):
     elif(load_type=="incremental"):
         cursor.execute("SELECT MAX(date) FROM assets")
         last_date = cursor.fetchone()[0]
+        start_date = last_date
         if(not(last_date)):
             raise ValueError( "Not possible to do incremental load, historical data is missing. Please run a full load first.")
         

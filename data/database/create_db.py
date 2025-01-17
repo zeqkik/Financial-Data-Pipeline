@@ -5,7 +5,7 @@ def create_database():
     Create SQLite database with the table 'assets'
     '''
 
-    conn = sqlite.connect('data/financial_data.db')
+    conn = sqlite.connect('data/database/financial_data.db')
     cursor = conn.cursor()
 
     cursor.execute('''
