@@ -3,6 +3,7 @@ import yfinance as yf
 import sqlite3
 from datetime import date
 import os
+
 DATABASE_PATH = os.getenv("DATABASE_PATH", "data/database/financial_data.db")
 
 
@@ -68,7 +69,7 @@ def ingest_data(load_type="full"):
         'Dividends': 'dividends',
         'Stock Splits': 'stock_splits',
         'Ticker': 'ticker'
-    })
+    })[['ticker', 'date', 'high', 'open', 'low', 'close', 'volume', 'dividends', 'stock_splits']]
 
     # Converter 'date' para string no formato YYYY-MM-DD
     final_df['date'] = final_df['date'].dt.strftime('%Y-%m-%d')
@@ -85,5 +86,5 @@ def ingest_data(load_type="full"):
     conn.close()
 
 if __name__ == "__main__":
-    load_type = os.getenv("LOAD_TYPE", "incremental")  # Default: incremental
+    load_type = os.getenv("LOAD_TYPE", "full")  # Default: incremental
     ingest_data(load_type)
