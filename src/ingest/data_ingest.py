@@ -28,7 +28,7 @@ def ingest_data(load_type="full"):
     elif(load_type=="incremental"):
         cursor.execute("SELECT MAX(date) FROM assets")
         last_date = cursor.fetchone()[0]
-        start_date = last_date
+        start_date = (pd.to_datetime(last_date) + pd.DateOffset(days=1)).strftime("%Y-%m-%d") #load data since d+1 from last date present in databse
         if(not(last_date)):
             raise ValueError( "Not possible to do incremental load, historical data is missing. Please run a full load first.")
         
@@ -36,6 +36,7 @@ def ingest_data(load_type="full"):
         raise ValueError("Invalid load type - It should be 'full' or 'incremental'.")
     
     end_date = str(date.today())
+    print(f"DEBUG - Start Date: {start_date}, End Date: {end_date}")
     tickers_data = yf.download(tickers_str, start=start_date, end=end_date,  actions=True, group_by="ticker")
 
     # Creating the dataframe in the same schema as the database
@@ -76,6 +77,7 @@ def ingest_data(load_type="full"):
 
     # Garantir que 'volume' seja do tipo float
     final_df['volume'] = final_df['volume'].astype(float)
+    
 
 
     final_df.to_sql('assets', conn, if_exists='append', index=False)
@@ -86,5 +88,5 @@ def ingest_data(load_type="full"):
     conn.close()
 
 if __name__ == "__main__":
-    load_type = os.getenv("LOAD_TYPE", "full")  # Default: incremental
+    load_type = os.getenv("LOAD_TYPE", "incremental")  # Default: incremental
     ingest_data(load_type)

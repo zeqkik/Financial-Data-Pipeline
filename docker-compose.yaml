@@ -12,4 +12,19 @@ services:
       LOAD_TYPE: "incremental"                              
     command: python /app/src/ingest/data_ingest.py
     restart: no
+
+
+  feature-engineering:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    container_name: feature_engineering
+    volumes:
+      - ./data:/app/data  
+      - ./src:/app/src     
+    environment:
+      DATABASE_PATH: "/app/data/database/financial_data.db"  
+      SQL_PATH: "/app/src/feature_engineering"                         
+    command: python /app/src/feature_engineering/feature_engineering.py
+    restart: no
     
