@@ -25,68 +25,56 @@ with DAG(
 ) as dag:
     data_ingestion_task =  DockerOperator(
         task_id='daily_data_ingestion',
-        image='data-ingestion',
+        image='financial-data-pipeline-data-ingestion',
         api_version="auto",
         auto_remove= 'success',
         command='python /app/src/ingest/data_ingest.py',
         docker_url='unix://var/run/docker.sock',
         network_mode='bridge',
-        #volumes=[f"{data_path}:/app/data",f"{src_path}:/app/src"],
-        #volumes=[
-        #"/opt/airflow/project/data:/app/data",
-        #"/opt/airflow/project/src:/app/src"
-        #],
-        mounts=[
-            # Mount the data directory
-            docker.types.Mount(
-                source='/opt/airflow/project/data',
-                target='/app/data',
-                type='bind'
-            ),
-            # Mount the src directory
-            docker.types.Mount(
-                source='/opt/airflow/project/src',
-                target='/app/src',
-                type='bind'
-            )
-        ],
         environment={
                 "DATABASE_PATH": "/app/data/database/financial_data.db",  
                 "LOAD_TYPE": "incremental"  
-        }
+        },
+    mounts=[
+        docker.types.Mount(
+            source=data_path,  # Caminho absoluto do host
+            target='/app/data',
+            type='bind'
+        ),
+        docker.types.Mount(
+            source=src_path,  # Caminho absoluto do host
+            target='/app/src',
+            type='bind'
+        )
+    ],
+    mount_tmp_dir=False  # Desabilita montagem de diretórios temporários
     )
 
     feature_engineering_task =  DockerOperator(
-        task_id='data_ingest_feature_engineering',
-        image='feature-engineering',
+        task_id='daily_feature_engineering',
+        image='financial-data-pipeline-feature-engineering',
         api_version="auto",
         auto_remove= 'success',
         command= "python /app/src/feature_engineering/feature_engineering.py",
         docker_url='unix://var/run/docker.sock',
         network_mode='bridge',
-        #volumes=[f"{data_path}:/app/data",f"{src_path}:/app/src"],
-        #volumes=[
-        #"/opt/airflow/project/data:/app/data",
-        #"/opt/airflow/project/src:/app/src"
-        #],
-        mounts=[
-                    # Mount the data directory
-                    docker.types.Mount(
-                        source='/opt/airflow/project/data',
-                        target='/app/data',
-                        type='bind'
-                    ),
-                    # Mount the src directory
-                    docker.types.Mount(
-                        source='/opt/airflow/project/src',
-                        target='/app/src',
-                        type='bind'
-                    )
-                ],
         environment={
                 "DATABASE_PATH": "/app/data/database/financial_data.db",
                  "SQL_PATH": "/app/src/feature_engineering"  
-        }    
+        },
+        mounts=[
+            docker.types.Mount(
+                source=data_path,  # Caminho absoluto no sistema de arquivos do host
+                target='/app/data',  # Caminho no container
+                type='bind'
+            ),
+            docker.types.Mount(
+                source=src_path,  # Caminho absoluto no sistema de arquivos do host
+                target='/app/src',  # Caminho no container
+                type='bind'
+            ),
+        ],
+        mount_tmp_dir=False  # Desabilita montagem de diretórios temporários
     )
 
 data_ingestion_task >> feature_engineering_task
