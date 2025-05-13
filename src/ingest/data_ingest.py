@@ -44,7 +44,7 @@ def ingest_data(load_type="full"):
     data_list = []
 
     for ticker in tickers_data.columns.levels[0]:
-        # Selecionar o DataFrame para cada ticker
+        #  Selecionar o DataFrame para cada ticker
         df = tickers_data[ticker].copy()
         
         # Garantir que as colunas 'Dividends' e 'Stock Splits' existam, mesmo que com valor 0
