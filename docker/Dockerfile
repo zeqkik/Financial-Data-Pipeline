@@ -12,5 +12,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY src/ /app/src/
 COPY data/database/ /app/database/
 
-CMD ["python", "/app/ingest/data_ingest.py"]
 

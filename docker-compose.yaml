@@ -27,4 +27,31 @@ services:
       SQL_PATH: "/app/src/feature_engineering"                         
     command: python /app/src/feature_engineering/feature_engineering.py
     restart: no
-    
+
+  model-training:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    container_name: model-training
+    volumes:
+      - ./data:/app/data  
+      - ./src:/app/src     
+    environment:
+      DATABASE_PATH: "/app/data/database/financial_data.db"  
+      MODEL_PATH: "/app/src/model/models/model.joblib"
+    command: python /app/src/model/model_training.py
+    restart: no
+
+  model-predict:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    container_name: model-predict
+    volumes:
+      - ./data:/app/data  
+      - ./src:/app/src     
+    environment:
+      DATABASE_PATH: "/app/data/database/financial_data.db"  
+      MODEL_PATH: "/app/src/model/models/model.joblib"
+    command: python /app/src/model/model_predict.py
+    restart: no
