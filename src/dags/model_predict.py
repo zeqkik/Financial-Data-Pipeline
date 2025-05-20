@@ -12,8 +12,8 @@ default_args = {
 }
 
 project_dir = os.path.abspath(os.path.dirname(__file__))
-src_path = "C:/Users/ezequ/Documents/Estudos/Financial-Data-Pipeline/src"
-data_path = "C:/Users/ezequ/Documents/Estudos/Financial-Data-Pipeline/data"
+src_path = "C:/Users/ezequ/Documents/Estudos/Financial-Data-Pipeline/src" # update with the correct path
+data_path = "C:/Users/ezequ/Documents/Estudos/Financial-Data-Pipeline/data" # update with the correct path
 
 with DAG(
     dag_id='model_prediction',

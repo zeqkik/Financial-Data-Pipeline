@@ -50,6 +50,11 @@ financial-data-pipeline/
 │   │   └── model_training.py
 │   │
 │   ├── feature_engineering/
+│   │   ├── __init__.py
+│   │   ├── feature_engineering.py
+│   │   ├── close_window_30_90_180.sql 
+│   │   └── pct_change.sql
+│   │
 │   ├── ingest/
 │   │   ├── __init__.py
 │   │   ├── data_ingest.py
