@@ -3,7 +3,6 @@ import joblib
 import sqlite3
 import os 
 
-#DATABASE_PATH = "data\database\financial_data.db"
 DATABASE_PATH = os.getenv("DATABASE_PATH", "data/database/financial_data.db")
 MODEL_PATH = os.getenv("MODEL_PATH", "src/model/models/model.joblib")
 

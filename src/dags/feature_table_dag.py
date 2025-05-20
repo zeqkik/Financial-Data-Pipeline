@@ -12,8 +12,6 @@ default_args = {
 }
 
 project_dir = os.path.abspath(os.path.dirname(__file__))
-#src_path = os.path.abspath(os.path.join(project_dir,'..'))
-#data_path = os.path.abspath(os.path.join(project_dir,'..','..','data'))
 src_path = "C:/Users/ezequ/Documents/Estudos/Financial-Data-Pipeline/src"
 data_path = "C:/Users/ezequ/Documents/Estudos/Financial-Data-Pipeline/data"
 
@@ -37,17 +35,17 @@ with DAG(
         },
     mounts=[
         docker.types.Mount(
-            source=data_path,  # Caminho absoluto do host
+            source=data_path,  
             target='/app/data',
             type='bind'
         ),
         docker.types.Mount(
-            source=src_path,  # Caminho absoluto do host
+            source=src_path,  
             target='/app/src',
             type='bind'
         )
     ],
-    mount_tmp_dir=False  # Desabilita montagem de diretórios temporários
+    mount_tmp_dir=False  
     )
 
     feature_engineering_task =  DockerOperator(
@@ -64,17 +62,17 @@ with DAG(
         },
         mounts=[
             docker.types.Mount(
-                source=data_path,  # Caminho absoluto no sistema de arquivos do host
-                target='/app/data',  # Caminho no container
+                source=data_path,  
+                target='/app/data',  
                 type='bind'
             ),
             docker.types.Mount(
-                source=src_path,  # Caminho absoluto no sistema de arquivos do host
-                target='/app/src',  # Caminho no container
+                source=src_path,  
+                target='/app/src',  
                 type='bind'
             ),
         ],
-        mount_tmp_dir=False  # Desabilita montagem de diretórios temporários
+        mount_tmp_dir=False  
     )
 
 data_ingestion_task >> feature_engineering_task

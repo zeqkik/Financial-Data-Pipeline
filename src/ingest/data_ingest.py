@@ -44,25 +44,23 @@ def ingest_data(load_type="full"):
     data_list = []
 
     for ticker in tickers_data.columns.levels[0]:
-        #  Selecionar o DataFrame para cada ticker
         df = tickers_data[ticker].copy()
         
-        # Garantir que as colunas 'Dividends' e 'Stock Splits' existam, mesmo que com valor 0
+        # Bugs treatment
         if 'Dividends' not in df.columns:
             df['Dividends'] = 0
         if 'Stock Splits' not in df.columns:
             df['Stock Splits'] = 0
 
-        # Adicionar o ticker como uma nova coluna
         df['Ticker'] = ticker
         
-        # Resetar o índice para incluir as datas como uma coluna
+        # Set date as a column
         df = df.reset_index()
         
-        # Adicionar o DataFrame ajustado à lista
+ 
         data_list.append(df)
 
-    # Concatenar todos os DataFrames ajustados
+    # Append adjusted dataframes
     final_df = pd.concat(data_list, ignore_index=True)
 
     final_df = final_df.rename(columns={
@@ -78,10 +76,8 @@ def ingest_data(load_type="full"):
         'Ticker': 'ticker'
     })[['ticker', 'date', 'high', 'open', 'low', 'close', 'volume', 'dividends', 'stock_splits']]
 
-    # Converter 'date' para string no formato YYYY-MM-DD
     final_df['date'] = final_df['date'].dt.strftime('%Y-%m-%d')
 
-    # Garantir que 'volume' seja do tipo float
     final_df['volume'] = final_df['volume'].astype(float)
     
 
