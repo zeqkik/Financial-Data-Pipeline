@@ -104,3 +104,4 @@ Predict the **probability of price increase or decrease** for **20 selected S&P 
 - **Apache Airflow**
 - **Docker**, **Docker Compose**
 - **SQLite Database**
+- **Streamlit**
