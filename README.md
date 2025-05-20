@@ -16,12 +16,18 @@ This project implements an **end-to-end machine learning pipeline** to **predict
 - **Prediction**  
   Daily predictions for the selected 20 S&P 500 stocks, estimating the probability of upward or downward movement over the next 5 business days.
 
+ **Interactive Dashboard**  
+  A [Streamlit-based dashboard](https://financial-data-pipeline-model-panel.streamlit.app/) to visualize prediction results in real time.
+
+
 ## ⚙️ Architecture Overview
 
 - **Apache Airflow DAGs**
   - `data_ingest_feature_engineering`: Runs **daily** for data ingestion and feature engineering.
   - `model_prediction`: Runs **daily** to generate predictions.
   - `model_training`: Runs **weekly** to retrain the model.
+ - `streamlit_app`: Panel to display model results.
+
 
 - **Dockerized Services**
   - `data-ingestion`
@@ -57,13 +63,16 @@ financial-data-pipeline/
 │   │
 │   ├── ingest/
 │   │   ├── __init__.py
-│   │   ├── data_ingest.py
-│   │   └── data_ingest_nb.ipynb
+│   │   └── data_ingest.py
 │   │
 │   └── model/
 │       ├── models/
+│       │   └── model.joblib
 │       ├── model_predict.py
 │       └── model_training.py
+│
+├── streamlit_app/
+│   └── app.py
 │
 ├── docker-compose.yaml
 └── README.md
