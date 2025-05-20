@@ -26,7 +26,9 @@ This project implements an **end-to-end machine learning pipeline** to **predict
   - `data_ingest_feature_engineering`: Runs **daily** for data ingestion and feature engineering.
   - `model_prediction`: Runs **daily** to generate predictions.
   - `model_training`: Runs **weekly** to retrain the model.
- - `streamlit_app`: Panel to display model results.
+  - `streamlit_app`: Panel to display model results.
+    ![Architecture](diagram.png)
+
 
 
 - **Dockerized Services**
